@@ -15,9 +15,8 @@ public class Conversor {
 	private String a;	
 	private double monto;
 	private String url ;
-	private double priceExchange;
-	private double result;
 	
+	//mapper para convertir objetos Java en formato JSON y viceversa
 	ObjectMapper mapper = new ObjectMapper();
 	
 	
@@ -28,27 +27,30 @@ public class Conversor {
 		this.de = de;
 		this.a = a;
 		this.monto = monto;
+		//url para metodo get
 		this.url = "https://api.apilayer.com/exchangerates_data/convert?to="+this.a+"&from="+this.de+"&amount="+this.monto;
 	}
 
 
 	public void mostrar() {
+		//peticion al api
 		HttpRequest peticion = HttpRequest.newBuilder().GET()
 				.uri(URI.create(url))
-				.header("apikey", "WYrGOM67x5cfwHU2PJgF1f9iR5DSmyes")
+				.header("apikey", "WYrGOM67x5cfwHU2PJgF1f9iR5DSmyes")//key de la api consumida
 				.GET()
 				.build();
 				
 		
 		try {
+			//respuesta
 			HttpResponse<String> response = cliente.send(peticion, HttpResponse.BodyHandlers.ofString());
 			
-			//JSONArray jsonArray = new JSONArray(mapper.readTree(response.body()));
-			//JSONObject jsonObject = jsonArray.getJSONObject(0);
+			//JsonNode es una clase abstracta que tiene varias subclases concretas que representan diferentes tipos de nodos JSON, como objetos JSON, matrices JSON, valores JSON, etc. Cada subclase proporciona métodos para leer y manipular los datos en ese tipo de nodo JSON.
+			
 			JsonNode jsonNode = mapper.readTree(response.body());
 			
 			
-			
+			//impresion de resultados
 			System.out.println("Convirtiendo "+monto+" "+de+" a "+a+ " resultado "+jsonNode.get("result").asText()+" "+a);
 			System.out.println("tasa: "+jsonNode.get("info").get("rate").asText());
 			

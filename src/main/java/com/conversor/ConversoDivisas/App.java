@@ -36,7 +36,7 @@ public class App {
 		default:
 			break;
 		}
-		//agregue un comentario
+		
 		System.out.println("elija moneda destino\n" + "1. COP\n" + "2. EUR\n" + "3. USD\n" + "4. AUD\n" + "5. GBP\n");
 		
 		opc = entrada.nextInt();
