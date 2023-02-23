@@ -2,66 +2,45 @@ package com.conversor.ConversoDivisas;
 
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 public class App {
 	public static void main(String[] args) {
-		String de="";
-		String a="";
-		double monto;
+		String[] monedas = { "COP", "EUR", "USD", "AUD", "GBP" };
+		String[] opciones = { "SI", "NO" };
+		String continua;
+		String de;
+		String a;
+		Double monto;
 		int opc;
-		Scanner entrada = new Scanner(System.in);
+		do {
+			try {
+				monto = Double.parseDouble(JOptionPane.showInputDialog(null, "Ingrese monto a convertir:",
+						"Ingreso de datos", JOptionPane.PLAIN_MESSAGE));
+				opc = JOptionPane.showOptionDialog(null, "Seleccione Divisa Origen", "Opciones de divisas",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, monedas, monedas[0]);
+				de = monedas[opc];
+				opc = JOptionPane.showOptionDialog(null, "Seleccione Divisa Destino", "Opciones de divisas",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, monedas, monedas[0]);
 
-		System.out.println("Ingrese el importe a convertir");
+				a = monedas[opc];
+				Conversor exchange = new Conversor(de, a, monto);
 
-		monto = entrada.nextDouble();
+				exchange.mostrar();
 
-		System.out.println("elija moneda origen\n" + "1. COP\n" + "2. EUR\n" + "3. USD\n" + "4. AUD\n" + "5. GBP\n");
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null,
+						"El monto ingresado debe ser mayor a 0 y estar en formato numérico. Actualmente ha ingresado: "
+								+ e.getMessage(),
+						"Error", JOptionPane.ERROR_MESSAGE);
+			}
+			opc = JOptionPane.showOptionDialog(null, "Desea realizar otra Conversion?", "Opciones",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+			continua = opciones[opc];
+		} while (continua.equalsIgnoreCase("SI"));
 
-		opc = entrada.nextInt();
-		switch (opc) {
-		case 1:
-            de = "COP";
-			break;
-		case 2:
-			de = "EUR";
-			break;
-		case 3:
-			de = "USD";
-			break;
-		case 4:
-			de = "AUD";
-			break;
-		case 5:
-			de = "GBP";
-			break;
-		default:
-			break;
-		}
-		
-		System.out.println("elija moneda destino\n" + "1. COP\n" + "2. EUR\n" + "3. USD\n" + "4. AUD\n" + "5. GBP\n");
-		
-		opc = entrada.nextInt();
-		switch (opc) {
-		case 1:
-            a = "COP";
-			break;
-		case 2:
-			a = "EUR";
-			break;
-		case 3:
-			a = "USD";
-			break;
-		case 4:
-			a = "AUD";
-			break;
-		case 5:
-			a = "GBP";
-			break;
-		default:
-			break;
-		}
+		JOptionPane.showMessageDialog(null, "GRACIAS POR UTILIZAR NUESTRO EXCHANGE", "Resultado",
+				JOptionPane.INFORMATION_MESSAGE);
 
-		Conversor prueba = new Conversor(de, a, monto);
-
-		prueba.mostrar();
 	}
 }
